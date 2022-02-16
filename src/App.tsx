@@ -42,6 +42,7 @@ import {
 import './App.css'
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { useAlert } from './context/AlertContext'
+import { ColorPanel } from './components/color-panel/ColorPanel'
 
 function App() {
   const prefersDarkMode = window.matchMedia(
@@ -256,6 +257,7 @@ function App() {
           onClick={() => setIsSettingsModalOpen(true)}
         />
       </div>
+      <ColorPanel color={solution} />
       <Grid
         guesses={guesses}
         currentGuess={currentGuess}

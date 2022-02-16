@@ -1,14 +1,11 @@
-import { WORDS } from '../constants/wordlist'
-import { VALID_GUESSES } from '../constants/validGuesses'
 import { WRONG_SPOT_MESSAGE, NOT_CONTAINED_MESSAGE } from '../constants/strings'
 import { getGuessStatuses } from './statuses'
 
-export const isWordInWordList = (word: string) => {
-  return (
-    WORDS.includes(word.toLowerCase()) ||
-    VALID_GUESSES.includes(word.toLowerCase())
-  )
-}
+/**
+ * 入力された word がカラーコードとして正しいか？
+ */
+export const isWordInWordList = (word: string) =>
+  /^[0-9A-F]{6}$/.test(word.toUpperCase())
 
 export const isWinningWord = (word: string) => {
   return solution === word
@@ -59,8 +56,38 @@ export const getWordOfDay = () => {
   const index = Math.floor((now - epochMs) / msInDay)
   const nextday = (index + 1) * msInDay + epochMs
 
+  const colorNum = 256 * 256 * 256
+  const randomedIndex = seededRandomInt(0, colorNum - 1, index)
+
+  // from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+  function seededRandom(seed: number): number {
+    seed = (seed * 9301 + 49297) % 233280
+    const rnd = seed / 233280
+
+    return rnd
+  }
+  function seededRandomInt(min: number, max: number, seed: number): number {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(seededRandom(seed) * (max - min) + min)
+  }
+
+  /**
+   * n 番目のカラーコードを取得する関数
+   *
+   * @param n 0以上256*256*256未満の整数
+   */
+  function getColorAt(n: number): string {
+    const blueNum = n % 256
+    const greenNum = (n >> 8) % 256
+    const redNum = ((n >> 8) >> 8) % 256
+    return [redNum, greenNum, blueNum]
+      .map((x) => x.toString(16).padStart(2, '0'))
+      .join('')
+  }
+
   return {
-    solution: WORDS[index % WORDS.length].toUpperCase(),
+    solution: getColorAt(randomedIndex).toUpperCase(),
     solutionIndex: index,
     tomorrow: nextday,
   }
