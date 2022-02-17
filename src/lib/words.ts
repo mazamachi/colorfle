@@ -73,33 +73,24 @@ export const getWordOfDay = () => {
   }
 
   /**
-   * n 番目のカラーコードとその補色を取得する関数
+   * n 番目のカラーコードを取得する関数
    *
    * @param n 0以上256*256*256未満の整数
    */
-  function getColorAt(n: number): [string, string] {
+  function getColorAt(n: number): string {
     const blueNum = n % 256
     const greenNum = (n >> 8) % 256
     const redNum = ((n >> 8) >> 8) % 256
-    return [
-      [redNum, greenNum, blueNum]
-        .map((x) => x.toString(16).padStart(2, '0'))
-        .join(''),
-      [255 - redNum, 255 - greenNum, 255 - blueNum]
-        .map((x) => x.toString(16).padStart(2, '0'))
-        .join(''),
-    ]
+    return [redNum, greenNum, blueNum]
+      .map((x) => x.toString(16).padStart(2, '0'))
+      .join('')
   }
 
-  const [todayColor, complementaryColor] = getColorAt(randomedIndex)
-
   return {
-    solution: todayColor.toUpperCase(),
-    complementaryColor: complementaryColor.toUpperCase(),
+    solution: getColorAt(randomedIndex).toUpperCase(),
     solutionIndex: index,
     tomorrow: nextday,
   }
 }
 
-export const { solution, complementaryColor, solutionIndex, tomorrow } =
-  getWordOfDay()
+export const { solution, solutionIndex, tomorrow } = getWordOfDay()
