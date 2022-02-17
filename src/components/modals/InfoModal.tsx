@@ -10,9 +10,10 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
   return (
     <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        Guess the color of the tile above in 6 tries. After each guess, the
-        color of the tiles will change to show how close your guess was to the
-        color. And the color of the characters will be the color your guess.
+        Guess the <b>color code </b>of the tile above in 6 tries. After each
+        guess, the color of the tiles will change to show how close your guess
+        was to the color. And the color of the characters will be the color your
+        guess.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
@@ -66,21 +67,28 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
         <Cell value="D" color="0000CD" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The letter U is not in the color code in any spot.
+        The letter C is not in the color code in any spot.
       </p>
 
       <p className="mt-6 text-sm text-gray-500 dark:text-gray-300">
         Colorfle by{' '}
-        <a href="https://twitter.com/mazamachi" className="underline font-bold">
+        <a
+          href="https://twitter.com/mazamachi"
+          className="underline font-bold"
+          target="_blank"
+          rel="noreferrer"
+        >
           @mazamachi
         </a>
         .
       </p>
-      <p className="mt-6 italic text-sm text-gray-500 dark:text-gray-300">
+      <p className="mt-2 italic text-sm text-gray-500 dark:text-gray-300">
         Forked from{' '}
         <a
           href="https://github.com/cwackerfuss/react-wordle"
           className="underline font-bold"
+          target="_blank"
+          rel="noreferrer"
         >
           react-wordle
         </a>
