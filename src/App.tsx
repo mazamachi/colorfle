@@ -30,6 +30,7 @@ import {
   isWinningWord,
   solution,
   findFirstUnusedReveal,
+  complementaryColor,
 } from './lib/words'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
@@ -257,7 +258,8 @@ function App() {
           onClick={() => setIsSettingsModalOpen(true)}
         />
       </div>
-      <ColorPanel color={solution} />
+      <div dangerouslySetInnerHTML={{ __html: "<!-- DON'T CHEAT!!! -->" }} />
+      <ColorPanel color={solution} complementaryColor={complementaryColor} />
       <Grid
         guesses={guesses}
         currentGuess={currentGuess}
