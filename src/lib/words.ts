@@ -59,38 +59,45 @@ export const getWordOfDay = () => {
   const colorNum = 256 * 256 * 256
   const randomedIndex = seededRandomInt(0, colorNum - 1, index)
 
-  // from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
-  function seededRandom(seed: number): number {
-    seed = (seed * 9301 + 49297) % 233280
-    const rnd = seed / 233280
-
-    return rnd
-  }
-  function seededRandomInt(min: number, max: number, seed: number): number {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(seededRandom(seed) * (max - min) + min)
-  }
-
-  /**
-   * n 番目のカラーコードを取得する関数
-   *
-   * @param n 0以上256*256*256未満の整数
-   */
-  function getColorAt(n: number): string {
-    const blueNum = n % 256
-    const greenNum = (n >> 8) % 256
-    const redNum = ((n >> 8) >> 8) % 256
-    return [redNum, greenNum, blueNum]
-      .map((x) => x.toString(16).padStart(2, '0'))
-      .join('')
-  }
-
   return {
-    solution: getColorAt(randomedIndex).toUpperCase(),
+    solution: getColorAt(randomedIndex),
     solutionIndex: index,
     tomorrow: nextday,
   }
 }
 
+// from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+export function seededRandom(seed: number): number {
+  seed = (seed * 9301 + 49297) % 233280
+  const rnd = seed / 233280
+
+  return rnd
+}
+
+export function seededRandomInt(
+  min: number,
+  max: number,
+  seed: number
+): number {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(seededRandom(seed) * (max - min) + min)
+}
+
+/**
+ * n 番目のカラーコードを取得する関数
+ *
+ * @param n 0以上256*256*256未満の整数
+ */
+export function getColorAt(n: number): string {
+  const blueNum = n % 256
+  const greenNum = (n >> 8) % 256
+  const redNum = ((n >> 8) >> 8) % 256
+  return [redNum, greenNum, blueNum]
+    .map((x) => x.toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase()
+}
+
 export const { solution, solutionIndex, tomorrow } = getWordOfDay()
+
