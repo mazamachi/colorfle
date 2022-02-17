@@ -98,13 +98,7 @@ export function seededRandomInt(
  * @param n 0以上256*256*256未満の整数
  */
 export function getColorAt(n: number): string {
-  const blueNum = n % 256
-  const greenNum = (n >> 8) % 256
-  const redNum = ((n >> 8) >> 8) % 256
-  return [redNum, greenNum, blueNum]
-    .map((x) => x.toString(16).padStart(2, '0'))
-    .join('')
-    .toUpperCase()
+  return n.toString(16).padStart(6, '0').toUpperCase()
 }
 
 export const { solution, solutionIndex, tomorrow } = getWordOfDay()
