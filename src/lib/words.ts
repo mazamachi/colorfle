@@ -66,7 +66,12 @@ export const getWordOfDay = () => {
   }
 }
 
-// from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+/**
+ * 与えられたシードを元に 0 以上 1 以下の乱数を返す関数。
+ * from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+ *
+ * @param seed シード値。0以上の数。
+ */
 export function seededRandom(seed: number): number {
   seed = (seed * 9301 + 49297) % 233280
   const rnd = seed / 233280
@@ -74,6 +79,9 @@ export function seededRandom(seed: number): number {
   return rnd
 }
 
+/**
+ * 与えられたシードを元に min 以上 max 以下の整数の乱数を返す関数。
+ */
 export function seededRandomInt(
   min: number,
   max: number,
@@ -100,4 +108,3 @@ export function getColorAt(n: number): string {
 }
 
 export const { solution, solutionIndex, tomorrow } = getWordOfDay()
-
