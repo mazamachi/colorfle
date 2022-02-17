@@ -1,16 +1,45 @@
-import { getColorAt, seededRandom, seededRandomInt } from './words'
+import {
+  getColorAt,
+  isWordInWordList,
+  seededRandom,
+  seededRandomInt,
+} from './words'
 import fc from 'fast-check'
+
+describe('isWordInWordList', () => {
+  it.each([
+    { color: '000000', expected: true },
+    { color: 'FFFFFF', expected: true },
+    { color: 'ffffff', expected: true },
+    { color: '-00000', expected: false },
+    { color: 'xxxxxx', expected: false },
+    { color: 'XXXXXX', expected: false },
+    { color: '0000000', expected: false },
+    { color: '00000', expected: false },
+  ])('returns "$expected" for $color', ({ color, expected }) => {
+    expect(isWordInWordList(color)).toBe(expected)
+  })
+})
 
 describe('getColorAt', () => {
   it.each([
-    [0, '000000'],
-    [15, '00000F'],
-    [16, '000010'],
-    [255, '0000FF'],
-    [256, '000100'],
-    [256 * 256 * 256 - 1, 'FFFFFF'],
-  ])('returns "$1" for $0', (index, color) => {
+    { index: 0, color: '000000' },
+    { index: 15, color: '00000F' },
+    { index: 16, color: '000010' },
+    { index: 255, color: '0000FF' },
+    { index: 256, color: '000100' },
+    { index: 256 * 256 * 256 - 1, color: 'FFFFFF' },
+  ])('returns "$1" for $0', ({ index, color }) => {
     expect(getColorAt(index)).toBe(color)
+  })
+
+  it('returns color code', () => {
+    fc.assert(
+      fc.property(
+        fc.nat().filter((n) => n <= 256 * 256 * 256 - 1),
+        (n) => isWordInWordList(getColorAt(n))
+      )
+    )
   })
 })
 
