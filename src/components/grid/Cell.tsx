@@ -9,6 +9,7 @@ type Props = {
   isRevealing?: boolean
   isCompleted?: boolean
   position?: number
+  color?: string
 }
 
 export const Cell = ({
@@ -17,6 +18,7 @@ export const Cell = ({
   isRevealing,
   isCompleted,
   position = 0,
+  color,
 }: Props) => {
   const isFilled = value && !isCompleted
   const shouldReveal = isRevealing && isCompleted
@@ -44,9 +46,13 @@ export const Cell = ({
     }
   )
 
+  const styles = {
+    color: `#${color}`,
+  }
+
   return (
-    <div className={classes} style={{ animationDelay }}>
-      <div className="letter-container" style={{ animationDelay }}>
+    <div className={classes} style={{ animationDelay, ...styles }}>
+      <div className="letter-container" style={{ animationDelay, ...styles }}>
         {value}
       </div>
     </div>

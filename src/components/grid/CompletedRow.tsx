@@ -19,6 +19,7 @@ export const CompletedRow = ({ guess, isRevealing }: Props) => {
           position={i}
           isRevealing={isRevealing}
           isCompleted
+          color={guess}
         />
       ))}
     </div>
