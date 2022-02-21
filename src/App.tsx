@@ -58,6 +58,7 @@ function App() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [currentRowClass, setCurrentRowClass] = useState('')
   const [isGameLost, setIsGameLost] = useState(false)
+  const [isShareColor, setIsShareColor] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem('theme')
       ? localStorage.getItem('theme') === 'dark'
@@ -264,6 +265,7 @@ function App() {
         currentGuess={currentGuess}
         isRevealing={isRevealing}
         currentRowClassName={currentRowClass}
+        isShareColor={isShareColor}
       />
       <Keyboard
         onChar={onChar}
@@ -284,6 +286,13 @@ function App() {
         isGameLost={isGameLost}
         isGameWon={isGameWon}
         handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
+        handleShareColor={() => {
+          setIsShareColor(true)
+          setIsStatsModalOpen(false)
+          showSuccessAlert(
+            `${GAME_COPIED_MESSAGE} and please share this screenshot!!`
+          )
+        }}
         isHardMode={isHardMode}
       />
       <SettingsModal

@@ -4,9 +4,10 @@ import { Cell } from './Cell'
 type Props = {
   guess: string
   isRevealing?: boolean
+  isShareColor?: boolean
 }
 
-export const CompletedRow = ({ guess, isRevealing }: Props) => {
+export const CompletedRow = ({ guess, isRevealing, isShareColor }: Props) => {
   const statuses = getGuessStatuses(guess)
 
   return (
@@ -20,6 +21,7 @@ export const CompletedRow = ({ guess, isRevealing }: Props) => {
           isRevealing={isRevealing}
           isCompleted
           color={guess}
+          isShareColor={isShareColor}
         />
       ))}
     </div>

@@ -8,6 +8,7 @@ type Props = {
   status?: CharStatus
   isRevealing?: boolean
   isCompleted?: boolean
+  isShareColor?: boolean
   position?: number
   color?: string
 }
@@ -17,6 +18,7 @@ export const Cell = ({
   status,
   isRevealing,
   isCompleted,
+  isShareColor,
   position = 0,
   color,
 }: Props) => {
@@ -53,7 +55,7 @@ export const Cell = ({
   return (
     <div className={classes} style={{ animationDelay, ...styles }}>
       <div className="letter-container" style={{ animationDelay, ...styles }}>
-        {value}
+        {isShareColor ? '?' : value}
       </div>
     </div>
   )
