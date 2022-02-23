@@ -53,6 +53,7 @@
     "autoprefixer": "^10.4.2",
     "fast-check": "^2.22.0",
     "gh-pages": "^3.2.3",
+    "html2canvas": "^1.4.1",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.2",
     "postcss": "^8.4.5",
