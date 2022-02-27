@@ -292,10 +292,29 @@ function App() {
         isGameLost={isGameLost}
         isGameWon={isGameWon}
         handleShare={() => {
-          navigator.clipboard.writeText(
-            shareText(guesses, isGameLost, isHardMode)
-          )
-          showSuccessAlert(GAME_COPIED_MESSAGE)
+          const shareManually = () => {
+            navigator.clipboard.writeText(
+              shareText(guesses, isGameLost, isHardMode)
+            )
+            showSuccessAlert(GAME_COPIED_MESSAGE)
+          }
+          if (
+            window.navigator.share !== undefined &&
+            window.navigator.canShare !== undefined
+          ) {
+            const shareObject = {
+              text: shareText(guesses, isGameLost, isHardMode, false),
+              url: 'https://mazamachi.github.io/colorfle',
+            }
+
+            if (window.navigator.canShare(shareObject)) {
+              window.navigator.share(shareObject)
+            } else {
+              shareManually()
+            }
+          } else {
+            shareManually()
+          }
         }}
         handleShareColor={async () => {
           const shareManually = () => {
