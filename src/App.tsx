@@ -43,6 +43,8 @@ import './App.css'
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { useAlert } from './context/AlertContext'
 import { ColorPanel } from './components/color-panel/ColorPanel'
+import domtoimage from 'dom-to-image'
+import { shareText } from './lib/share'
 
 function App() {
   const prefersDarkMode = window.matchMedia(
@@ -241,41 +243,43 @@ function App() {
 
   return (
     <div className="pt-2 pb-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div className="flex w-80 mx-auto items-center mb-8 mt-8">
-        <h1 className="text-xl ml-2.5 grow font-bold dark:text-white">
-          {GAME_TITLE}
-        </h1>
-        <InformationCircleIcon
-          className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
-          onClick={() => setIsInfoModalOpen(true)}
-        />
-        <ChartBarIcon
-          className="h-6 w-6 mr-3 cursor-pointer dark:stroke-white"
-          onClick={() => setIsStatsModalOpen(true)}
-        />
-        <CogIcon
-          className="h-6 w-6 mr-3 cursor-pointer dark:stroke-white"
-          onClick={() => setIsSettingsModalOpen(true)}
-        />
-      </div>
-      <div dangerouslySetInnerHTML={{ __html: "<!-- DON'T CHEAT!!! -->" }} />
-      <ColorPanel color={solution} />
-      <Grid
-        guesses={guesses}
-        currentGuess={currentGuess}
-        isRevealing={isRevealing}
-        currentRowClassName={currentRowClass}
-        isShareColor={isShareColor}
-      />
-      {isShareColor ? null : (
-        <Keyboard
-          onChar={onChar}
-          onDelete={onDelete}
-          onEnter={onEnter}
+      <div id="sharable-area" className="pt-8">
+        <div className="flex w-80 mx-auto items-center mb-8">
+          <h1 className="text-xl ml-2.5 grow font-bold dark:text-white">
+            {GAME_TITLE}
+          </h1>
+          <InformationCircleIcon
+            className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
+            onClick={() => setIsInfoModalOpen(true)}
+          />
+          <ChartBarIcon
+            className="h-6 w-6 mr-3 cursor-pointer dark:stroke-white"
+            onClick={() => setIsStatsModalOpen(true)}
+          />
+          <CogIcon
+            className="h-6 w-6 mr-3 cursor-pointer dark:stroke-white"
+            onClick={() => setIsSettingsModalOpen(true)}
+          />
+        </div>
+        <div dangerouslySetInnerHTML={{ __html: "<!-- DON'T CHEAT!!! -->" }} />
+        <ColorPanel color={solution} />
+        <Grid
           guesses={guesses}
+          currentGuess={currentGuess}
           isRevealing={isRevealing}
+          currentRowClassName={currentRowClass}
+          isShareColor={isShareColor}
         />
-      )}
+        {isShareColor ? null : (
+          <Keyboard
+            onChar={onChar}
+            onDelete={onDelete}
+            onEnter={onEnter}
+            guesses={guesses}
+            isRevealing={isRevealing}
+          />
+        )}
+      </div>
       <InfoModal
         isOpen={isInfoModalOpen}
         handleClose={() => setIsInfoModalOpen(false)}
@@ -287,13 +291,50 @@ function App() {
         gameStats={stats}
         isGameLost={isGameLost}
         isGameWon={isGameWon}
-        handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-        handleShareColor={() => {
+        handleShare={() => {
+          navigator.clipboard.writeText(
+            shareText(guesses, isGameLost, isHardMode)
+          )
+          showSuccessAlert(GAME_COPIED_MESSAGE)
+        }}
+        handleShareColor={async () => {
+          const shareManually = () => {
+            window.navigator.clipboard.writeText(
+              shareText(guesses, isGameLost, isHardMode)
+            )
+            showSuccessAlert(
+              `${GAME_COPIED_MESSAGE} and please share this screenshot!!`
+            )
+          }
           setIsShareColor(true)
           setIsStatsModalOpen(false)
-          showSuccessAlert(
-            `${GAME_COPIED_MESSAGE} and please share this screenshot!!`
-          )
+          if (
+            window.navigator.share !== undefined &&
+            window.navigator.canShare !== undefined
+          ) {
+            const blob = await domtoimage.toBlob(
+              document.querySelector('#sharable-area')!,
+              {
+                bgcolor: isDarkMode ? 'rgb(15, 23, 42)' : undefined,
+              }
+            )
+            const imageFile = new File([blob], 'image.png', {
+              type: 'image/png',
+            })
+            const shareObject = {
+              text: shareText(guesses, isGameLost, isHardMode, false),
+              url: 'https://mazamachi.github.io/colorfle',
+              files: [imageFile],
+            }
+
+            if (window.navigator.canShare(shareObject)) {
+              window.navigator.share(shareObject)
+            } else {
+              shareManually()
+            }
+          } else {
+            shareManually()
+          }
         }}
         isHardMode={isHardMode}
       />

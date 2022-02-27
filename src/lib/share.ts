@@ -4,17 +4,19 @@ import { GAME_TITLE } from '../constants/strings'
 import { getStoredIsHighContrastMode } from './localStorage'
 import { MAX_CHALLENGES } from '../constants/settings'
 
-export const shareStatus = (
+export function shareText(
   guesses: string[],
   lost: boolean,
-  isHardMode: boolean
-) => {
-  navigator.clipboard.writeText(
+  isHardMode: boolean,
+  showUrl: boolean | undefined = true
+): string {
+  return (
     `${GAME_TITLE} ${solutionIndex} ${
       lost ? 'X' : guesses.length
     }/${MAX_CHALLENGES}${isHardMode ? '*' : ''}\n\n` +
-      generateEmojiGrid(guesses) +
-      '\n\nhttps://mazamachi.github.io/colorfle'
+    generateEmojiGrid(guesses) +
+    '\n' +
+    (showUrl ? '\nhttps://mazamachi.github.io/colorfle' : '')
   )
 }
 
