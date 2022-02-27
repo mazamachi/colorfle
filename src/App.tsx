@@ -30,7 +30,6 @@ import {
   isWinningWord,
   solution,
   findFirstUnusedReveal,
-  solutionIndex,
 } from './lib/words'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
@@ -45,7 +44,7 @@ import { AlertContainer } from './components/alerts/AlertContainer'
 import { useAlert } from './context/AlertContext'
 import { ColorPanel } from './components/color-panel/ColorPanel'
 import domtoimage from 'dom-to-image'
-import { generateEmojiGrid } from './lib/share'
+import { shareText } from './lib/share'
 
 function App() {
   const prefersDarkMode = window.matchMedia(
@@ -292,11 +291,15 @@ function App() {
         gameStats={stats}
         isGameLost={isGameLost}
         isGameWon={isGameWon}
-        handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
+        handleShare={() => {
+          navigator.clipboard.writeText(
+            shareText(guesses, isGameLost, isHardMode)
+          )
+          showSuccessAlert(GAME_COPIED_MESSAGE)
+        }}
         handleShareColor={async () => {
           setIsShareColor(true)
           setIsStatsModalOpen(false)
-          console.log(window.navigator, window.navigator.share)
           if (window.navigator.share !== undefined) {
             const blob = await domtoimage.toBlob(
               document.querySelector('#sharable-area')!,
@@ -307,30 +310,14 @@ function App() {
             const imageFile = new File([blob], 'image.png', {
               type: 'image/png',
             })
-            window.navigator
-              .share({
-                text:
-                  `${GAME_TITLE} ${solutionIndex} ${
-                    isGameLost ? 'X' : guesses.length
-                  }/${MAX_CHALLENGES}${isHardMode ? '*' : ''}\n\n` +
-                  generateEmojiGrid(guesses) +
-                  '\n\nhttps://mazamachi.github.io/colorfle',
-                url: 'https://mazamachi.github.io/colorfle',
-                files: [imageFile],
-              })
-              .then(() => {
-                console.log('共有成功.')
-              })
-              .catch((error) => {
-                console.log(error)
-              })
+            window.navigator.share({
+              text: shareText(guesses, isGameLost, isHardMode, false),
+              url: 'https://mazamachi.github.io/colorfle',
+              files: [imageFile],
+            })
           } else {
             window.navigator.clipboard.writeText(
-              `${GAME_TITLE} ${solutionIndex} ${
-                isGameLost ? 'X' : guesses.length
-              }/${MAX_CHALLENGES}${isHardMode ? '*' : ''}\n\n` +
-                generateEmojiGrid(guesses) +
-                '\n\nhttps://mazamachi.github.io/colorfle'
+              shareText(guesses, isGameLost, isHardMode)
             )
             showSuccessAlert(
               `${GAME_COPIED_MESSAGE} and please share this screenshot!!`
