@@ -298,9 +298,20 @@ function App() {
           showSuccessAlert(GAME_COPIED_MESSAGE)
         }}
         handleShareColor={async () => {
+          const shareManually = () => {
+            window.navigator.clipboard.writeText(
+              shareText(guesses, isGameLost, isHardMode)
+            )
+            showSuccessAlert(
+              `${GAME_COPIED_MESSAGE} and please share this screenshot!!`
+            )
+          }
           setIsShareColor(true)
           setIsStatsModalOpen(false)
-          if (window.navigator.share !== undefined) {
+          if (
+            window.navigator.share !== undefined &&
+            window.navigator.canShare !== undefined
+          ) {
             const blob = await domtoimage.toBlob(
               document.querySelector('#sharable-area')!,
               {
@@ -310,18 +321,19 @@ function App() {
             const imageFile = new File([blob], 'image.png', {
               type: 'image/png',
             })
-            window.navigator.share({
+            const shareObject = {
               text: shareText(guesses, isGameLost, isHardMode, false),
               url: 'https://mazamachi.github.io/colorfle',
               files: [imageFile],
-            })
+            }
+
+            if (window.navigator.canShare(shareObject)) {
+              window.navigator.share(shareObject)
+            } else {
+              shareManually()
+            }
           } else {
-            window.navigator.clipboard.writeText(
-              shareText(guesses, isGameLost, isHardMode)
-            )
-            showSuccessAlert(
-              `${GAME_COPIED_MESSAGE} and please share this screenshot!!`
-            )
+            shareManually()
           }
         }}
         isHardMode={isHardMode}
