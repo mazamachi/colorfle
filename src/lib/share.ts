@@ -11,7 +11,7 @@ export function shareText(
   showUrl: boolean | undefined = true
 ): string {
   return (
-    `${GAME_TITLE} ${solutionIndex} ${
+    `#${GAME_TITLE} ${solutionIndex} ${
       lost ? 'X' : guesses.length
     }/${MAX_CHALLENGES}${isHardMode ? '*' : ''}\n\n` +
     generateEmojiGrid(guesses) +
