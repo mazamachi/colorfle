@@ -10,14 +10,14 @@ export function shareText(
   isHardMode: boolean,
   showUrl: boolean | undefined = true
 ): string {
-  return `${GAME_TITLE} ${solutionIndex} ${
-    lost ? 'X' : guesses.length
-  }/${MAX_CHALLENGES}${isHardMode ? '*' : ''}\n\n` +
+  return (
+    `${GAME_TITLE} ${solutionIndex} ${
+      lost ? 'X' : guesses.length
+    }/${MAX_CHALLENGES}${isHardMode ? '*' : ''}\n\n` +
     generateEmojiGrid(guesses) +
     '\n' +
-    showUrl
-    ? '\nhttps://mazamachi.github.io/colorfle'
-    : ''
+    (showUrl ? '\nhttps://mazamachi.github.io/colorfle' : '')
+  )
 }
 
 export const generateEmojiGrid = (guesses: string[]) => {
