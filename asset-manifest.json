@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/colorfle/static/css/main.a30275b8.css",
-    "main.js": "/colorfle/static/js/main.d7fc3e8c.js",
+    "main.css": "/colorfle/static/css/main.346f139c.css",
+    "main.js": "/colorfle/static/js/main.58c0ed26.js",
     "static/js/787.b3f9d252.chunk.js": "/colorfle/static/js/787.b3f9d252.chunk.js",
     "index.html": "/colorfle/index.html",
-    "main.a30275b8.css.map": "/colorfle/static/css/main.a30275b8.css.map",
-    "main.d7fc3e8c.js.map": "/colorfle/static/js/main.d7fc3e8c.js.map",
+    "main.346f139c.css.map": "/colorfle/static/css/main.346f139c.css.map",
+    "main.58c0ed26.js.map": "/colorfle/static/js/main.58c0ed26.js.map",
     "787.b3f9d252.chunk.js.map": "/colorfle/static/js/787.b3f9d252.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a30275b8.css",
-    "static/js/main.d7fc3e8c.js"
+    "static/css/main.346f139c.css",
+    "static/js/main.58c0ed26.js"
   ]
 }
