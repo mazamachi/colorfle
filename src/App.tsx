@@ -241,41 +241,43 @@ function App() {
 
   return (
     <div className="pt-2 pb-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div className="flex w-80 mx-auto items-center mb-8 mt-8">
-        <h1 className="text-xl ml-2.5 grow font-bold dark:text-white">
-          {GAME_TITLE}
-        </h1>
-        <InformationCircleIcon
-          className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
-          onClick={() => setIsInfoModalOpen(true)}
-        />
-        <ChartBarIcon
-          className="h-6 w-6 mr-3 cursor-pointer dark:stroke-white"
-          onClick={() => setIsStatsModalOpen(true)}
-        />
-        <CogIcon
-          className="h-6 w-6 mr-3 cursor-pointer dark:stroke-white"
-          onClick={() => setIsSettingsModalOpen(true)}
-        />
-      </div>
-      <div dangerouslySetInnerHTML={{ __html: "<!-- DON'T CHEAT!!! -->" }} />
-      <ColorPanel color={solution} />
-      <Grid
-        guesses={guesses}
-        currentGuess={currentGuess}
-        isRevealing={isRevealing}
-        currentRowClassName={currentRowClass}
-        isShareColor={isShareColor}
-      />
-      {isShareColor ? null : (
-        <Keyboard
-          onChar={onChar}
-          onDelete={onDelete}
-          onEnter={onEnter}
+      <div id="sharable-area" className="pt-8">
+        <div className="flex w-80 mx-auto items-center mb-8">
+          <h1 className="text-xl ml-2.5 grow font-bold dark:text-white">
+            {GAME_TITLE}
+          </h1>
+          <InformationCircleIcon
+            className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
+            onClick={() => setIsInfoModalOpen(true)}
+          />
+          <ChartBarIcon
+            className="h-6 w-6 mr-3 cursor-pointer dark:stroke-white"
+            onClick={() => setIsStatsModalOpen(true)}
+          />
+          <CogIcon
+            className="h-6 w-6 mr-3 cursor-pointer dark:stroke-white"
+            onClick={() => setIsSettingsModalOpen(true)}
+          />
+        </div>
+        <div dangerouslySetInnerHTML={{ __html: "<!-- DON'T CHEAT!!! -->" }} />
+        <ColorPanel color={solution} />
+        <Grid
           guesses={guesses}
+          currentGuess={currentGuess}
           isRevealing={isRevealing}
+          currentRowClassName={currentRowClass}
+          isShareColor={isShareColor}
         />
-      )}
+        {isShareColor ? null : (
+          <Keyboard
+            onChar={onChar}
+            onDelete={onDelete}
+            onEnter={onEnter}
+            guesses={guesses}
+            isRevealing={isRevealing}
+          />
+        )}
+      </div>
       <InfoModal
         isOpen={isInfoModalOpen}
         handleClose={() => setIsInfoModalOpen(false)}
